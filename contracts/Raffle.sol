@@ -8,7 +8,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 import "hardhat/console.sol";
 
 /*  Errors  */
-error Raffle__SendMoteToEnterRaffle();
+error Raffle__SendMoreToEnterRaffle();
 error Raffle__RaffleNotOpen();
 error Raffle__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint256 raffleState);
 error Raffle__TransferFailed();
@@ -45,7 +45,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     /*  Events  */
     event RaffleEnter(address indexed player);
-    event RequestedRaffleWinner(uint256 indexed requestedId);
+    event RequestedRaffleWinner(uint256 indexed requestId);
     event WinnerPicked(address indexed player);
 
     /*  Functions  */
@@ -72,7 +72,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         //require(s_raffleState == RaffleState.OPEN, "Raffle is not open");
 
         if (msg.value < i_entranceFee) {
-            revert Raffle__SendMoteToEnterRaffle();
+            revert Raffle__SendMoreToEnterRaffle();
         }
 
         if (s_raffleState != RaffleState.OPEN) {
@@ -129,6 +129,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
             );
         }
         s_raffleState = RaffleState.CALCULATING;
+
         uint256 requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subscriptionId,
