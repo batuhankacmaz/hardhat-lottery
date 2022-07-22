@@ -80,11 +80,22 @@ const config: HardhatUserConfig = {
     },
     etherscan: {
         // npx hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
-        apiKey: {
+        apiKey: ETHERSCAN_API_KEY,
+        customChains: [
+            {
+                network: "rinkeby",
+                chainId: 4,
+                urls: {
+                    apiURL: "https://api-rinkeby.etherscan.io/api",
+                    browserURL: "https://rinkeby.etherscan.io",
+                },
+            },
+        ],
+        /* apiKey: {
             rinkeby: ETHERSCAN_API_KEY,
             kovan: ETHERSCAN_API_KEY,
-            polygon: POLYGONSCAN_API_KEY,
-        },
+            //polygon: POLYGONSCAN_API_KEY,
+        }, */
     },
     gasReporter: {
         enabled: false,
